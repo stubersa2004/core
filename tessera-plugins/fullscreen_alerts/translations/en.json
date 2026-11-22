@@ -1,0 +1,21 @@
+{
+  "_meta": { "name": "English" },
+  "screen": {
+    "name": "Fullscreen alerts",
+    "fullscreen": "Alerts fill the screen",
+    "margin": "Margin",
+    "from_size": "From screen size",
+    "unit_mm": " mm",
+    "unit_inch": " in"
+  },
+  "app": {
+    "name": "Fullscreen alerts",
+    "summary": "Alerts from Home Assistant fill the whole screen, on a 10-inch screen too.",
+    "setting_on": "Alerts fill the screen",
+    "setting_on_hint": "Every alert (show_alert, show_alert_choice, esp_screens_show_alert) is laid out over the whole screen. Off: Tessera's own card.",
+    "setting_margin": "Margin",
+    "setting_margin_hint": "The room between the alert and the edge of the screen, in millimetres. 0 fills it edge to edge.",
+    "setting_from_size": "From screen size",
+    "setting_from_size_hint": "Only on screens with at least this diagonal, in inches. 0 on every screen, 7 only on the 7 and 10 inch ones."
+  }
+}

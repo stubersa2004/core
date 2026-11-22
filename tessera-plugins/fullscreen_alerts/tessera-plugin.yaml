@@ -1,0 +1,23 @@
+# Fullscreen alerts: Tessera's own alert card (esphome.<screen>_show_alert, show_alert_choice and the
+# esp_screens_show_alert event) laid out over the whole glass instead of a card of a fixed size in millimetres. On a
+# 7 or 10 inch screen the alert then fills the screen, with its icon, title and text in the middle and large buttons
+# along the bottom. Nothing changes in the automations: every alert that comes is fitted when it shows (Plugin::on_alert).
+# An alert with a camera picture keeps Tessera's own layout, which makes room for the picture.
+id: fullscreen_alerts
+version: 0.1.0
+api: "0.8"
+icon: bell-ring
+maintainer: stubersa2004
+license: MIT
+stage: beta
+topics: [home]
+requires:
+  esphome: 2026.6.2
+boards: any
+flash_kb: 6
+
+# The settings of plugin.yaml, also in the plugin's details on the screen's Plugins tab (their names as ids).
+settings:
+  - { key: fullscreen_alerts, label: setting_on, hint: setting_on_hint }
+  - { key: fullscreen_alert_margin, label: setting_margin, hint: setting_margin_hint }
+  - { key: fullscreen_alert_from_size, label: setting_from_size, hint: setting_from_size_hint }

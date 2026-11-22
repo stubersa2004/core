@@ -1,0 +1,21 @@
+{
+  "_meta": { "name": "Deutsch" },
+  "screen": {
+    "name": "Vollbild-Benachrichtigungen",
+    "fullscreen": "Benachrichtigungen im Vollbild",
+    "margin": "Rand",
+    "from_size": "Ab Bildschirmgrösse",
+    "unit_mm": " mm",
+    "unit_inch": " Zoll"
+  },
+  "app": {
+    "name": "Vollbild-Benachrichtigungen",
+    "summary": "Benachrichtigungen aus Home Assistant füllen den ganzen Bildschirm, auch auf einem 10-Zoll-Display.",
+    "setting_on": "Benachrichtigungen im Vollbild",
+    "setting_on_hint": "Jede Benachrichtigung (show_alert, show_alert_choice, esp_screens_show_alert) füllt den ganzen Bildschirm. Aus: die normale Karte von Tessera.",
+    "setting_margin": "Rand",
+    "setting_margin_hint": "Abstand zwischen Benachrichtigung und Bildschirmrand in Millimetern. 0 füllt den Bildschirm bis zum Rand.",
+    "setting_from_size": "Ab Bildschirmgrösse",
+    "setting_from_size_hint": "Nur auf Bildschirmen mit mindestens dieser Diagonale in Zoll. 0 auf allen, 7 nur auf den 7- und 10-Zoll-Displays."
+  }
+}

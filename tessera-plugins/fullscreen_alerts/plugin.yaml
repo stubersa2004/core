@@ -1,0 +1,43 @@
+# What a screen gets when it takes this plugin: the component and its three settings, kept on the screen and shown in
+# Home Assistant, on the screen's settings page and in the editor.
+switch:
+  - platform: template
+    id: fullscreen_alerts_on
+    name: "Fullscreen alerts"
+    icon: mdi:fullscreen
+    optimistic: true
+    restore_mode: RESTORE_DEFAULT_ON
+    entity_category: config
+
+number:
+  # The room between the alert and the edge of the glass, in millimetres: 0 fills the glass edge to edge.
+  - platform: template
+    id: fullscreen_alert_margin
+    name: "Fullscreen alert margin"
+    icon: mdi:border-outside
+    optimistic: true
+    min_value: 0
+    max_value: 20
+    step: 1
+    initial_value: 0
+    restore_value: true
+    unit_of_measurement: mm
+    entity_category: config
+  # Only on glass of at least this diagonal, in inches: 0 on every screen, 7 only on the 7 and 10 inch ones.
+  - platform: template
+    id: fullscreen_alert_from_size
+    name: "Fullscreen alert from size"
+    icon: mdi:monitor-screenshot
+    optimistic: true
+    min_value: 0
+    max_value: 13
+    step: 1
+    initial_value: 0
+    restore_value: true
+    unit_of_measurement: "in"
+    entity_category: config
+
+fullscreen_alerts:
+  enabled: fullscreen_alerts_on
+  margin: fullscreen_alert_margin
+  from_size: fullscreen_alert_from_size
