@@ -5,6 +5,10 @@ namespace esphome::fullscreen_alerts {
 
 static const char *const TAG = "fullscreen_alerts";
 
+using fullscreen_layout::diagonal_tenths;
+using fullscreen_layout::Fill;
+using fullscreen_layout::Metrics;
+
 namespace {
 bool is_label(lv_obj_t *obj) { return obj != nullptr && lv_obj_check_type(obj, &lv_label_class); }
 bool hidden(lv_obj_t *obj) { return obj == nullptr || lv_obj_has_flag(obj, LV_OBJ_FLAG_HIDDEN); }
@@ -141,7 +145,7 @@ void FullscreenAlerts::apply() {
   m.text_line = line_of(text_font);
   const int margin = margin_px();
   const bool two = !hidden(parts_.button2);
-  fill_ = fill(canvas_w(), canvas_h(), margin, two, m);
+  fill_ = fullscreen_layout::fill(canvas_w(), canvas_h(), margin, two, m);
   const Fill &f = fill_;
 
   lv_obj_set_style_radius(parts_.card, margin == 0 ? 0 : own_.radius, LV_PART_MAIN);
@@ -189,7 +193,7 @@ void FullscreenAlerts::centre() {
   lv_obj_update_layout(parts_.subtitle);
   const char *words = lv_label_get_text(parts_.subtitle);
   const int text_h = words != nullptr && *words ? lv_obj_get_height(parts_.subtitle) : 0;
-  fullscreen_alerts::centre(fill_, metrics_, text_h);
+  fullscreen_layout::centre(fill_, metrics_, text_h);
   lv_obj_set_pos(parts_.icon, fill_.disc_x, fill_.disc_y);
   lv_obj_set_pos(parts_.title, fill_.text_x, fill_.title_y);
   lv_obj_set_pos(parts_.subtitle, fill_.text_x, fill_.text_y);

@@ -3,7 +3,7 @@
 #include <cassert>
 #include <cstdio>
 
-using namespace fullscreen_alerts;
+using namespace fullscreen_layout;
 
 static void check(const char *name, int w, int h, int margin, bool two, const Metrics &m) {
   Fill f = fill(w, h, margin, two, m);

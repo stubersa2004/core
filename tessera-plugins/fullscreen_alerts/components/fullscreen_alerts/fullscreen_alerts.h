@@ -55,8 +55,8 @@ class FullscreenAlerts : public Component, public tessera::Plugin {
   font::Font *icon_font_{};  // the core's large icon font (plugin.yaml), for the disc on large glass
   Parts parts_;
   Own own_;
-  Fill fill_;
-  Metrics metrics_;
+  fullscreen_layout::Fill fill_;
+  fullscreen_layout::Metrics metrics_;
   bool applied_ = false;
 };
 

@@ -10,7 +10,7 @@
 // read, stand one under the other: the icon in a round disc, the title in a large font and the text. The three are one
 // group in the middle of the room above the buttons: a short alert stands in the middle of the glass, a long one takes
 // every whole line down to the buttons and ends in dots there.
-namespace fullscreen_alerts {
+namespace fullscreen_layout {
 
 // The sizes of the look, in this board's pixels (tessera::ui::px of the reference look), and the line heights of the
 // card's fonts as the screen has them.
@@ -98,4 +98,4 @@ inline int diagonal_tenths(int canvas_w, int canvas_h, int px_per_100mm) {
   return static_cast<int>(pixels * 1000.0 / (px_per_100mm * 25.4) + 0.5);
 }
 
-}  // namespace fullscreen_alerts
+}  // namespace fullscreen_layout
