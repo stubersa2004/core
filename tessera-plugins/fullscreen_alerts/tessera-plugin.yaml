@@ -4,7 +4,7 @@
 # along the bottom. Nothing changes in the automations: every alert that comes is fitted when it shows (Plugin::on_alert).
 # An alert with a camera picture keeps Tessera's own layout, which makes room for the picture.
 id: fullscreen_alerts
-version: 0.1.1
+version: 0.1.2
 api: "0.8"
 icon: bell-ring
 maintainer: stubersa2004

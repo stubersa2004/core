@@ -46,6 +46,7 @@ class FullscreenAlerts : public Component, public tessera::Plugin {
   void fit();
   void apply();
   void centre();
+  void centre_icon();
   void restore();
   int margin_px() const;
   static void text_resized(lv_event_t *event);
@@ -55,6 +56,10 @@ class FullscreenAlerts : public Component, public tessera::Plugin {
   font::Font *icon_font_{};  // the core's large icon font (plugin.yaml), for the disc on large glass
   Parts parts_;
   Own own_;
+  // The large icon font with the card's own icon font behind it (lv_font_t::fallback): the large font holds only the
+  // icons of full-page tiles, so an icon it lacks shows in the card's size instead of not at all.
+  lv_font_t icon_face_{};
+  uint32_t icon_code_ = 0;  // the icon the disc was centred for
   fullscreen_layout::Fill fill_;
   fullscreen_layout::Metrics metrics_;
   bool applied_ = false;

@@ -21,6 +21,17 @@ const lv_font_t *face(tessera::Font font, const lv_font_t *otherwise) {
   const lv_font_t *f = tessera::ui::font(font);
   return f ? f : otherwise;
 }
+// The first character of a UTF-8 text (an icon of Tessera's set is one character), 0 for none.
+uint32_t first_code(const char *text) {
+  const auto *u = reinterpret_cast<const unsigned char *>(text);
+  if (u == nullptr || *u == 0) return 0;
+  if (u[0] < 0x80) return u[0];
+  if ((u[0] & 0xE0) == 0xC0 && u[1]) return ((u[0] & 0x1F) << 6) | (u[1] & 0x3F);
+  if ((u[0] & 0xF0) == 0xE0 && u[1] && u[2]) return ((u[0] & 0x0F) << 12) | ((u[1] & 0x3F) << 6) | (u[2] & 0x3F);
+  if ((u[0] & 0xF8) == 0xF0 && u[1] && u[2] && u[3])
+    return ((u[0] & 0x07) << 18) | ((u[1] & 0x3F) << 12) | ((u[2] & 0x3F) << 6) | (u[3] & 0x3F);
+  return 0;
+}
 // Glass of 6.5 inches and more takes the large fonts: a 7 or 10 inch screen is read from across the room.
 constexpr int ROOMY_TENTHS = 65;
 }  // namespace
@@ -108,6 +119,8 @@ void FullscreenAlerts::on_interval(uint32_t) {
   if (!applied_ || lv_obj_get_width(parts_.card) != canvas_w() - 2 * margin ||
       lv_obj_get_height(parts_.card) != canvas_h() - 2 * margin)
     apply();
+  else
+    centre_icon();
 }
 
 void FullscreenAlerts::apply() {
@@ -123,7 +136,12 @@ void FullscreenAlerts::apply() {
   }
   // Large glass: the icon in the large icon font of full-page tiles, the title in the card's large value font (the same
   // letters as the headline, larger), the text in the headline's. Smaller glass keeps the card's own fonts.
-  const lv_font_t *icon_font = wide && icon_font_ != nullptr ? icon_font_->get_lv_font() : own_.icon;
+  const lv_font_t *icon_font = own_.icon;
+  if (wide && icon_font_ != nullptr && own_.icon != nullptr) {
+    icon_face_ = *icon_font_->get_lv_font();
+    icon_face_.fallback = own_.icon;
+    icon_font = &icon_face_;
+  }
   lv_obj_set_style_text_font(parts_.icon, icon_font, LV_PART_MAIN);
   const lv_font_t *title_font = wide ? face(Font::VALUE, own_.title) : own_.title;
   const lv_font_t *text_font = wide ? face(Font::HEADLINE, own_.subtitle) : own_.subtitle;
@@ -181,8 +199,11 @@ void FullscreenAlerts::apply() {
   };
   place(parts_.button, parts_.label, f.button_x, f.button_w);
   if (two) place(parts_.button2, parts_.label2, f.button2_x, f.button2_w);
-  if (!applied_) ESP_LOGI(TAG, "Alert over the whole glass: %d x %d%s", f.card_w, f.card_h, wide ? ", large fonts" : "");
+  if (!applied_) {
+    ESP_LOGI(TAG, "Alert over the whole glass: %d x %d%s", f.card_w, f.card_h, wide ? ", large fonts" : "");
+  }
   applied_ = true;
+  icon_code_ = 0;
   centre();
 }
 
@@ -197,7 +218,24 @@ void FullscreenAlerts::centre() {
   lv_obj_set_pos(parts_.icon, fill_.disc_x, fill_.disc_y);
   lv_obj_set_pos(parts_.title, fill_.text_x, fill_.title_y);
   lv_obj_set_pos(parts_.subtitle, fill_.text_x, fill_.text_y);
+  centre_icon();
   lv_obj_invalidate(parts_.overlay);
+}
+
+// The icon in the middle of its disc, by the box of its own glyph: LVGL stands a glyph on the label font's base line,
+// also one that comes from the fallback font, which is smaller. The core sets the icon after on_alert, so this runs
+// again when the text's height changes (the core sets the icon just before it) and every 250 ms while the card shows.
+void FullscreenAlerts::centre_icon() {
+  if (!applied_) return;
+  const uint32_t code = first_code(lv_label_get_text(parts_.icon));
+  if (code == 0 || code == icon_code_) return;
+  icon_code_ = code;
+  const lv_font_t *font = lv_obj_get_style_text_font(parts_.icon, LV_PART_MAIN);
+  lv_font_glyph_dsc_t glyph;
+  if (font == nullptr || !lv_font_get_glyph_dsc(font, &glyph, code, 0)) return;
+  const int top = (font->line_height - font->base_line) - glyph.box_h - glyph.ofs_y;  // the glyph's top in its line
+  lv_obj_set_style_pad_top(parts_.icon, (fill_.disc - glyph.box_h) / 2 - top, LV_PART_MAIN);
+  ESP_LOGD(TAG, "Icon %X from the %s font", (unsigned) code, glyph.resolved_font == font ? "large" : "card's");
 }
 
 void FullscreenAlerts::text_resized(lv_event_t *event) {
