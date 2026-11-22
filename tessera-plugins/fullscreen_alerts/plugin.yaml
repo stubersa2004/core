@@ -41,3 +41,5 @@ fullscreen_alerts:
   enabled: fullscreen_alerts_on
   margin: fullscreen_alert_margin
   from_size: fullscreen_alert_from_size
+  # The core's large icon font (full-page tiles), for the icon's disc on large glass.
+  icon_font: materialdesign_icons_big

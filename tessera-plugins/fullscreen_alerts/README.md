@@ -4,8 +4,10 @@
 
 Tessera's alert card has the same size in millimetres on every screen: on a 2.8 or 4 inch screen it fills the glass,
 on a 7 or 10 inch screen it is a small card in the middle. With this plugin every alert fills the whole screen,
-whatever its size: the icon, the title and the text in the middle, the button (or the two buttons of
-`show_alert_choice`) large along the bottom.
+whatever its size: the icon in a round disc, a large title and the text as one group in the middle, the button (or
+the two buttons of `show_alert_choice`) large along the bottom. On screens of 6.5 inches and more the icon, the title
+and the text take the screen's larger fonts, so the alert reads from across the room; the lines of text stay a
+comfortable width on wide glass.
 
 Nothing changes in your automations. `esphome.<screen>_show_alert`, `esphome.<screen>_show_alert_choice`, the
 `esp_screens_show_alert` event and the alerts of Tessera's Events page all work as before; the plugin lays the card out
